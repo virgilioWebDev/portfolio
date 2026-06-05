@@ -58,11 +58,10 @@
   }
 
   /* ─── NAV ───────────────────────────── */
+  /* NAV DESKTOP */
   nav {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     z-index: 100;
     padding: 1.1rem 2rem;
     display: flex;
@@ -71,7 +70,7 @@
     transition: background var(--transition), backdrop-filter var(--transition);
   }
   nav.scrolled {
-    background: rgba(15,23,42,0.85);
+    background: rgba(15,23,42,0.95);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
   }
@@ -84,6 +83,8 @@
     letter-spacing: -0.02em;
   }
   .nav-logo span { color: var(--accent); }
+
+  /* Links desktop — visíveis apenas acima de 768px */
   .nav-links {
     display: flex;
     gap: 2rem;
@@ -101,17 +102,62 @@
   .nav-links a::after {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 1px;
+    bottom: -2px; left: 0;
+    width: 0; height: 1px;
     background: var(--accent);
     transition: width var(--transition);
   }
   .nav-links a:hover { color: var(--accent); }
   .nav-links a:hover::after { width: 100%; }
-  .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+
+  /* Hamburguer — oculto no desktop */
+  .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; z-index: 10001; position: relative; }
   .nav-toggle span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: var(--transition); }
+
+  /* Menu mobile — oculto no desktop */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 50%;
+    background: #0F172A;
+    border-left: 1px solid var(--border);
+    z-index: 10000;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5rem 2rem 2rem;
+    gap: 0;
+    list-style: none;
+  }
+  .mobile-nav-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    background: rgba(56,189,248,0.08);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition);
+  }
+  .mobile-nav-close:hover { background: rgba(56,189,248,0.15); color: var(--accent); }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav li a {
+    display: block;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: .85rem 0;
+    border-bottom: 1px solid var(--border);
+    width: 100%;
+  }
 
   /* ─── HERO ──────────────────────────── */
   #hero {
@@ -600,13 +646,14 @@
   .timeline-item::before {
     content: '';
     position: absolute;
-    left: -1.9rem;
+    left: -1.5rem;
     top: .35rem;
     width: 8px;
     height: 8px;
     background: var(--accent);
     border-radius: 50%;
     box-shadow: 0 0 12px var(--accent);
+    transform: translateX(-50%);
   }
   .timeline-year {
     font-size: .75rem;
@@ -812,17 +859,20 @@
     .nav-links {
       position: fixed;
       top: 0;
+      left: auto;
       right: 0;
       bottom: 0;
       width: 260px;
-      background: rgba(15,23,42,0.97);
-      backdrop-filter: blur(24px);
+      height: 100%;
+      background: #0F172A;
       flex-direction: column;
+      align-items: flex-start;
       gap: 0;
       padding: 5rem 2rem 2rem;
       transform: translateX(100%);
       transition: transform var(--transition);
       border-left: 1px solid var(--border);
+      z-index: 9999;
     }
     .nav-links.open { transform: translateX(0); }
     .nav-links a { font-size: 1.1rem; padding: .75rem 0; border-bottom: 1px solid var(--border); }
@@ -847,16 +897,28 @@
 <!-- NAV -->
 <nav id="navbar">
   <a href="#hero" class="nav-logo">Virgílio<span>.</span></a>
-  <ul class="nav-links" id="navLinks">
+  <!-- Links desktop -->
+  <ul class="nav-links">
     <li><a href="#skills">Habilidades</a></li>
     <li><a href="#projects">Projetos</a></li>
     <li><a href="#about">Sobre</a></li>
     <li><a href="#contact">Contato</a></li>
   </ul>
+  <!-- Hamburguer mobile -->
   <div class="nav-toggle" id="navToggle" aria-label="Menu" role="button" tabindex="0">
     <span></span><span></span><span></span>
   </div>
 </nav>
+<!-- Menu mobile separado, fora do nav -->
+<ul class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()" aria-label="Fechar menu">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  <li><a href="#skills" onclick="closeMobileNav()">Habilidades</a></li>
+  <li><a href="#projects" onclick="closeMobileNav()">Projetos</a></li>
+  <li><a href="#about" onclick="closeMobileNav()">Sobre</a></li>
+  <li><a href="#contact" onclick="closeMobileNav()">Contato</a></li>
+</ul>
 
 <!-- HERO -->
 <section id="hero" aria-label="Apresentação">
@@ -1148,13 +1210,13 @@
 
   // Mobile menu
   const toggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
+  const mobileNav = document.getElementById('mobileNav');
   toggle.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
+    mobileNav.classList.toggle('open');
   });
-  navLinks.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => navLinks.classList.remove('open'));
-  });
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+  }
 
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
