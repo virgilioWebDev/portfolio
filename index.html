@@ -964,7 +964,7 @@
     pointer-events: none;
     opacity: 0;
   }
-  @media (hover: none) {
+  @media (hover: none), (max-width: 768px) {
     #c-dot, #c-ring { display: none !important; }
     body, * { cursor: auto !important; }
   }
@@ -1458,6 +1458,7 @@
 <div id="c-ring"></div>
 <script>
 (function() {
+  if (window.innerWidth <= 768 || !window.matchMedia('(hover: hover)').matches) return;
   var dot = document.getElementById('c-dot');
   var ring = document.getElementById('c-ring');
   var mx = 0, my = 0, rx = 0, ry = 0;
