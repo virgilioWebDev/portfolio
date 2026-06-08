@@ -96,8 +96,8 @@
     font-size: .9rem;
     font-weight: 500;
     letter-spacing: .02em;
-    transition: color var(--transition);
     position: relative;
+    transition: color var(--transition);
   }
   .nav-links a::after {
     content: '';
@@ -107,8 +107,12 @@
     background: var(--accent);
     transition: width var(--transition);
   }
-  .nav-links a:hover { color: var(--accent); }
-  .nav-links a:hover::after { width: 100%; }
+  .nav-links a.active {
+    color: var(--accent);
+  }
+  .nav-links a.active::after {
+    width: 100%;
+  }
 
   /* Hamburguer — oculto no desktop */
   .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; z-index: 10001; position: relative; }
@@ -1290,6 +1294,18 @@
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 30);
+
+    // Active section indicator
+    const sections = document.querySelectorAll('section[id]');
+    const navAs = document.querySelectorAll('.nav-links a');
+    let current = '';
+    sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+    });
+    navAs.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
   });
 
   // Mobile menu
