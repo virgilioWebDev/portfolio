@@ -9,7 +9,7 @@
 <title>Virgílio | Desenvolvedor Front-End</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -93,12 +93,24 @@
   .nav-links a {
     color: var(--muted);
     text-decoration: none;
-    font-size: .9rem;
-    font-weight: 500;
-    letter-spacing: .02em;
+    font-family: 'Inter', sans-serif;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
     position: relative;
     transition: color var(--transition);
   }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width var(--transition);
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
   .nav-links a::after {
     content: '';
     position: absolute;
@@ -209,6 +221,8 @@
     border-bottom: 1px solid var(--border);
     width: 100%;
     text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .08em;
   }
 
   /* ─── HERO ──────────────────────────── */
@@ -981,10 +995,10 @@
   <a href="#hero" class="nav-logo">Virgílio<span>.</span></a>
   <!-- Links desktop -->
   <ul class="nav-links">
-    <li><a href="#skills">HABILIDADE</a></li>
-    <li><a href="#projects">PROJETOS</a></li>
-    <li><a href="#about">SOBRE</a></li>
-    <li><a href="#contact">CONTATO</a></li>
+    <li><a href="#skills">Habilidades</a></li>
+    <li><a href="#projects">Projetos</a></li>
+    <li><a href="#about">Sobre</a></li>
+    <li><a href="#contact">Contato</a></li>
   </ul>
   <!-- Hamburguer mobile -->
   <div class="nav-toggle" id="navToggle" aria-label="Menu" role="button" tabindex="0">
